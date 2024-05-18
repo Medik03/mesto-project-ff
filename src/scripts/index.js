@@ -77,7 +77,6 @@ function handleFormSubmit(evt) {
 formElement.addEventListener("submit", handleFormSubmit);
 
 //форма добавления карточки
-
 const formAdd = document.forms["new-place"];
 const cardNameInput = formAdd.elements["place-name"];
 const cardUrlInput = formAdd.elements.link;
