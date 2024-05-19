@@ -8,14 +8,13 @@ function createCard(cardElem, deleteCard, openImage, likeCard) {
   const delCardButton = cardElement.querySelector(".card__delete-button");
   const cardImage = cardElement.querySelector(".card__image");
   const likeButton = cardElement.querySelector(".card__like-button");
-  const showImage = document.querySelector(".popup_type_image");
   cardElement.querySelector(".card__title").textContent = cardElem.name;
   cardImage.src = cardElem.link;
   cardImage.alt = cardElem.name;
 
   likeButton.addEventListener("click", likeCard);
   cardImage.addEventListener("click", function () {
-    openImage(cardElem, showImage);
+    openImage(cardElem);
   });
   delCardButton.addEventListener("click", function () {
     deleteCard(cardElement);
@@ -25,7 +24,7 @@ function createCard(cardElem, deleteCard, openImage, likeCard) {
 
 //удаление карточки
 function deleteCard(cardElement) {
-  cardElement.closest(".card").remove();
+  cardElement.remove();
 }
 
 //Лайк карточки

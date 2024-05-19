@@ -5,11 +5,6 @@ import { openPopup, closePopup } from "../components/modal.js";
 
 const galeryList = document.querySelector(".places__list");
 
-//добавление карточки
-function addCard(cardElement) {
-  galeryList.append(cardElement);
-}
-
 initialCards.forEach((cardElem) => {
   galeryList.append(createCard(cardElem, deleteCard, openImage, likeCard));
 });
@@ -28,8 +23,8 @@ const popupCard = document.querySelector(".popup_type_new-card"); //попап �
 // слушатель на редактирования профиля
 popupEditButton.addEventListener("click", function () {
   openPopup(popupEdit);
-  nameInput.value = profileTitle.textContent;
-  jobInput.value = profileDescription.textContent;
+  nameInputEdit.value = profileTitle.textContent;
+  jobInputEdit.value = profileDescription.textContent;
 });
 
 //слушатель на добавления карты
@@ -59,32 +54,34 @@ popupevt.forEach(function (popup) {
 });
 
 // Находим форму в DOM
-const formElement = document.querySelector(".popup__form"); // Воспользуйтесь методом querySelector()
+const formElementEdit = popupEdit.querySelector(".popup__form"); // Воспользуйтесь методом querySelector()
 // Находим поля формы в DOM
-const nameInput = document.querySelector(".popup__input_type_name"); // Воспользуйтесь инструментом .querySelector()
-const jobInput = document.querySelector(".popup__input_type_description"); // Воспользуйтесь инструментом .querySelector()
+const nameInputEdit = formElementEdit.querySelector(".popup__input_type_name"); // Воспользуйтесь инструментом .querySelector()
+const jobInputEdit = formElementEdit.querySelector(
+  ".popup__input_type_description"
+); // Воспользуйтесь инструментом .querySelector()
 const profileTitle = document.querySelector(".profile__title");
 const profileDescription = document.querySelector(".profile__description");
 //Функция формы редактирования профиля
-function handleFormSubmit(evt) {
+function handleFormSubmitEdit(evt) {
   evt.preventDefault();
 
-  profileTitle.textContent = nameInput.value;
-  profileDescription.textContent = jobInput.value;
+  profileTitle.textContent = nameInputEdit.value;
+  profileDescription.textContent = jobInputEdit.value;
   closePopup(popupEdit);
 }
 
-formElement.addEventListener("submit", handleFormSubmit);
+formElementEdit.addEventListener("submit", handleFormSubmitEdit);
 
 //форма добавления карточки
-const formAdd = document.forms["new-place"];
-const cardNameInput = formAdd.elements["place-name"];
-const cardUrlInput = formAdd.elements.link;
+const formAddCard = document.forms["new-place"];
+const cardNameInput = formAddCard.elements["place-name"];
+const cardUrlInput = formAddCard.elements.link;
 
 function handleFormSubmitCard(evt) {
   evt.preventDefault();
 
-  let cardlist = {
+  const cardlist = {
     name: cardNameInput.value,
     link: cardUrlInput.value,
   };
@@ -94,4 +91,4 @@ function handleFormSubmitCard(evt) {
   closePopup(popupCard);
 }
 
-formAdd.addEventListener("submit", handleFormSubmitCard);
+formAddCard.addEventListener("submit", handleFormSubmitCard);
