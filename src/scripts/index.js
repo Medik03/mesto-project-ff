@@ -2,7 +2,8 @@ import "../pages/index.css";
 import { initialCards } from "./cards.js";
 import { createCard, deleteCard, likeCard } from "../components/card.js";
 import { openPopup, closePopup } from "../components/modal.js";
-
+import { enableValidation, clearValidation } from "../components/validation.js";
+import { validationSettings } from "../components/validation.js";
 const galeryList = document.querySelector(".places__list");
 
 initialCards.forEach((cardElem) => {
@@ -23,6 +24,7 @@ const popupCard = document.querySelector(".popup_type_new-card"); //попап �
 // слушатель на редактирования профиля
 popupEditButton.addEventListener("click", function () {
   openPopup(popupEdit);
+  clearValidation(formElementEdit,validationSettings);
   nameInputEdit.value = profileTitle.textContent;
   jobInputEdit.value = profileDescription.textContent;
 });
@@ -30,6 +32,7 @@ popupEditButton.addEventListener("click", function () {
 //слушатель на добавления карты
 popupCardButton.addEventListener("click", function () {
   openPopup(popupCard);
+  clearValidation(formAddCard,validationSettings);
 });
 
 //Функция увеличения карточки
@@ -57,9 +60,7 @@ popupevt.forEach(function (popup) {
 const formElementEdit = popupEdit.querySelector(".popup__form"); // Воспользуйтесь методом querySelector()
 // Находим поля формы в DOM
 const nameInputEdit = formElementEdit.querySelector(".popup__input_type_name"); // Воспользуйтесь инструментом .querySelector()
-const jobInputEdit = formElementEdit.querySelector(
-  ".popup__input_type_description"
-); // Воспользуйтесь инструментом .querySelector()
+const jobInputEdit = formElementEdit.querySelector( ".popup__input_type_description"); // Воспользуйтесь инструментом .querySelector()
 const profileTitle = document.querySelector(".profile__title");
 const profileDescription = document.querySelector(".profile__description");
 //Функция формы редактирования профиля
@@ -92,3 +93,8 @@ function handleFormSubmitCard(evt) {
 }
 
 formAddCard.addEventListener("submit", handleFormSubmitCard);
+//Валидация редактирование профиля
+
+
+
+enableValidation(validationSettings);

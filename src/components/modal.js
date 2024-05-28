@@ -19,3 +19,14 @@ function closeEsc(evt) {
     closePopup(popupOpened);
   }
 }
+
+export const setPopupOpenEventListener = (openButton, callBack) => {
+  openButton.addEventListener("click", () => {
+    handleOpenModal(popupNode);
+    clearValidation(popupEdit, validationSettings);
+    clearValidation(popupNewCard, validationSettings);
+    if (callBack) {
+      callBack();
+    }
+  });
+};
