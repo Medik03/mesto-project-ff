@@ -1,31 +1,28 @@
-export { enableValidation, clearValidation };
-export { validationSettings };
-
-const validationSettings = {
-  formSelector: ".popup__form",
-  inputSelector: ".popup__input",
-  submitButtonSelector: ".popup__button",
-  inactiveButtonClass: "popup__button_disabled",
-  inputErrorClass: "popup__input_type_error",
-  errorClass: "popup__error_visible",
-};
 //Добавляем класс с ошибкой
-const showInputError = (formElement, inputElement, errorMessage) => {
+
+debugger
+function showInputError(
+  formElement,
+  inputElement,
+  errorMessage,
+  validationSettings
+) {
   const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
   inputElement.classList.add(validationSettings.inputErrorClass);
-  errorElement.textContent = errorMessage;
   errorElement.classList.add(validationSettings.errorClass);
-};
+  errorElement.textContent = errorMessage;
+}
+console.log(showInputError);
 //удаляем класс с ошибкой
-const hideInputError = (formElement, inputElement) => {
+function hideInputError(formElement, inputElement, validationSettings) {
   const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
+  errorElement.textContent = "";
   inputElement.classList.remove(validationSettings.inputErrorClass);
   errorElement.classList.remove(validationSettings.errorClass);
-  errorElement.textContent = "";
-};
+}
 
 //Проверка валидности
-const checkInputValidity = (formElement, inputElement) => {
+function checkInputValidity(formElement, inputElement, validationSettings) {
   if (inputElement.validity.patternMismatch) {
     inputElement.setCustomValidity(inputElement.dataset.errorMessage);
   } else {
@@ -42,9 +39,9 @@ const checkInputValidity = (formElement, inputElement) => {
   } else {
     hideInputError(formElement, inputElement, validationSettings);
   }
-};
-//
-const setEventListeners = (formElement, validationSettings) => {
+}
+
+function setEventListeners(formElement, validationSettings) {
   const inputList = Array.from(
     formElement.querySelectorAll(validationSettings.inputSelector)
   );
@@ -58,7 +55,7 @@ const setEventListeners = (formElement, validationSettings) => {
       toggleButtonState(inputList, buttonElement, validationSettings);
     });
   });
-};
+}
 // Включаем валидацию
 function enableValidation(validationSettings) {
   const formList = Array.from(
@@ -89,6 +86,7 @@ function toggleButtonState(inputList, buttonElement, validationSettings) {
   }
 }
 //очистка ошибок
+
 function clearValidation(formElement, validationSettings) {
   const inputListError = Array.from(
     formElement.querySelectorAll(validationSettings.inputSelector)
@@ -101,3 +99,5 @@ function clearValidation(formElement, validationSettings) {
   );
   toggleButtonState(inputListError, buttonSubmit, validationSettings);
 }
+
+export { enableValidation, clearValidation };
