@@ -126,13 +126,14 @@ function handleFormSubmitCard(evt) {
         userId
       );
       galeryList.prepend(cardElement);
+      closePopup(popupCard);
+      formAddCard.reset();
     })
     .catch((err) => {
       console.log("Произошла ошибка при добавлении карточки:", err);
     })
     .finally(() => {
       saveButton(false, buttonFormAddCard);
-      closePopup(popupCard);
     });
 }
 

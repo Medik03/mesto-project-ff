@@ -1,6 +1,6 @@
 //Добавляем класс с ошибкой
 
-debugger
+
 function showInputError(
   formElement,
   inputElement,
