@@ -1,5 +1,4 @@
 import "../pages/index.css";
-import { initialCards } from "./cards.js";
 import { createCard, deleteCard, likeCard } from "../components/card.js";
 import { openPopup, closePopup } from "../components/modal.js";
 import { enableValidation, clearValidation } from "../components/validation.js";
@@ -76,14 +75,14 @@ const jobInputEdit = formElementEdit.querySelector(
 ); // Воспользуйтесь инструментом .querySelector()
 const profileTitle = document.querySelector(".profile__title");
 const profileDescription = document.querySelector(".profile__description");
-const ButtonFormEdit = popupEdit.querySelector(".popup__button");
+const buttonFormEdit = popupEdit.querySelector(".popup__button");
 //Функция формы редактирования профиля
 function editProfileData(evt) {
   evt.preventDefault();
 
   let name = nameInputEdit.value;
   let job = jobInputEdit.value;
-  saveButton(true, ButtonFormEdit);
+  saveButton(true, buttonFormEdit);
 
   getUserDataServer(name, job)
     .then((data) => {
@@ -96,8 +95,7 @@ function editProfileData(evt) {
       console.log("Произошла ошибка при изменении информации профиля:", err);
     })
     .finally(() => {
-      saveButton(false, ButtonFormEdit);
-      formElementEdit.reset();
+      saveButton(false, buttonFormEdit);
     });
 }
 
@@ -107,7 +105,7 @@ formElementEdit.addEventListener("submit", editProfileData);
 const formAddCard = document.forms["new-place"];
 const cardNameInput = formAddCard.elements["place-name"];
 const cardUrlInput = formAddCard.elements.link;
-const ButtonFormAddCard = formAddCard.querySelector(".popup__button");
+const buttonFormAddCard = formAddCard.querySelector(".popup__button");
 
 function handleFormSubmitCard(evt) {
   evt.preventDefault();
@@ -117,7 +115,7 @@ function handleFormSubmitCard(evt) {
     link: cardUrlInput.value,
   };
 
-  saveButton(true, ButtonFormAddCard);
+  saveButton(true, buttonFormAddCard);
   addCardServer(cardlist)
     .then((res) => {
       const cardElement = createCard(
@@ -133,8 +131,7 @@ function handleFormSubmitCard(evt) {
       console.log("Произошла ошибка при добавлении карточки:", err);
     })
     .finally(() => {
-      saveButton(false, ButtonFormAddCard);
-      evt.target.reset();
+      saveButton(false, buttonFormAddCard);
       closePopup(popupCard);
     });
 }
@@ -153,6 +150,7 @@ profileImageAvatar.addEventListener("click", function () {
 const formAvatarProfile = popupAvatar.querySelector(".popup__form");
 const avatarInput = formAvatarProfile.querySelector(".popup__input_type_url");
 const buttonSaveAvatar = formAvatarProfile.querySelector(".popup__button");
+
 function editProfileAvatar(evt) {
   evt.preventDefault();
   let avatar = avatarInput.value;
@@ -168,7 +166,6 @@ function editProfileAvatar(evt) {
     })
     .finally(() => {
       saveButton(false, buttonSaveAvatar);
-      formAvatarProfile.reset();
     });
 }
 
@@ -187,30 +184,28 @@ function saveButton(loader, button) {
 
 //API
 let userId = "";
-Promise.all([getUserData(), getInitialCards()]).then(([userData]) => {
-  /* Отображение моего имени и моей работы */
-  userId = userData._id;
-  profileTitle.textContent = userData.name;
-  profileDescription.textContent = userData.about;
-  profileImageAvatar.setAttribute(
-    "style",
-    `background-image: url('${userData.avatar}')`
-  );
+Promise.all([getUserData(), getInitialCards()])
+  .then(([userData, cardsArray]) => {
+    /* Отображение моего имени и моей работы */
+    userId = userData._id;
+    profileTitle.textContent = userData.name;
+    profileDescription.textContent = userData.about;
+    profileImageAvatar.setAttribute(
+      "style",
+      `background-image: url('${userData.avatar}')`
+    );
 
-  getInitialCards()
-    .then((res) => {
-      res.forEach((item) => {
-        const cardElement = createCard(
-          item,
-          deleteCard,
-          openImage,
-          likeCard,
-          userId
-        );
-        galeryList.append(cardElement);
-      });
-    })
-    .catch((err) => {
-      console.log("Ошибка при получении данных пользователя и карт:", err);
+    cardsArray.forEach((item) => {
+      const cardElement = createCard(
+        item,
+        deleteCard,
+        openImage,
+        likeCard,
+        userId
+      );
+      galeryList.append(cardElement);
     });
-});
+  })
+  .catch((err) => {
+    console.log("Ошибка при получении данных пользователя и карт:", err);
+  });

@@ -9,7 +9,6 @@ const config = {
 function checkResponse(res) {
   if (res.ok) {
     return res.json();
-    сonsole.log('запрос прошел успешно');
   } else {
     return Promise.reject(`Что-то пошло не так: ${res.status}`);
   }
