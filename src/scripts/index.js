@@ -30,20 +30,26 @@ const popupEditButton = document.querySelector(".profile__edit-button"); // пр
 const popupEdit = document.querySelector(".popup_type_edit"); //  открытия попапа редактирования
 const popupCardButton = document.querySelector(".profile__add-button"); // кнопка открытия добавлени карты
 const popupCard = document.querySelector(".popup_type_new-card"); //попап добавления карты
-
-// слушатель на редактирования профиля
-popupEditButton.addEventListener("click", function () {
-  openPopup(popupEdit);
-  clearValidation(formElementEdit, validationSettings);
-  nameInputEdit.value = profileTitle.textContent;
-  jobInputEdit.value = profileDescription.textContent;
-});
-
-//слушатель на добавления карты
-popupCardButton.addEventListener("click", function () {
-  openPopup(popupCard);
-  clearValidation(formAddCard, validationSettings);
-});
+// Форма редактирования профиля
+const formElementEdit = popupEdit.querySelector(".popup__form"); // Воспользуйтесь методом querySelector()
+const nameInputEdit = formElementEdit.querySelector(".popup__input_type_name"); // Воспользуйтесь инструментом .querySelector()
+const jobInputEdit = formElementEdit.querySelector(
+  ".popup__input_type_description"
+);
+const profileTitle = document.querySelector(".profile__title");
+const profileDescription = document.querySelector(".profile__description");
+const buttonFormEdit = popupEdit.querySelector(".popup__button");
+//форма добавления карточки
+const formAddCard = document.forms["new-place"];
+const cardNameInput = formAddCard.elements["place-name"];
+const cardUrlInput = formAddCard.elements.link;
+const buttonFormAddCard = formAddCard.querySelector(".popup__button");
+//Функция редактирования аватара
+const popupAvatar = document.querySelector(".popup_type_avatar");
+const profileImageAvatar = document.querySelector(".profile__image");
+const formAvatarProfile = popupAvatar.querySelector(".popup__form");
+const avatarInput = formAvatarProfile.querySelector(".popup__input_type_url");
+const buttonSaveAvatar = formAvatarProfile.querySelector(".popup__button");
 
 //Функция увеличения карточки
 function openImage(cardElem) {
@@ -66,16 +72,6 @@ popupevt.forEach(function (popup) {
   });
 });
 
-// Находим форму в DOM
-const formElementEdit = popupEdit.querySelector(".popup__form"); // Воспользуйтесь методом querySelector()
-// Находим поля формы в DOM
-const nameInputEdit = formElementEdit.querySelector(".popup__input_type_name"); // Воспользуйтесь инструментом .querySelector()
-const jobInputEdit = formElementEdit.querySelector(
-  ".popup__input_type_description"
-); // Воспользуйтесь инструментом .querySelector()
-const profileTitle = document.querySelector(".profile__title");
-const profileDescription = document.querySelector(".profile__description");
-const buttonFormEdit = popupEdit.querySelector(".popup__button");
 //Функция формы редактирования профиля
 function editProfileData(evt) {
   evt.preventDefault();
@@ -101,12 +97,7 @@ function editProfileData(evt) {
 
 formElementEdit.addEventListener("submit", editProfileData);
 
-//форма добавления карточки
-const formAddCard = document.forms["new-place"];
-const cardNameInput = formAddCard.elements["place-name"];
-const cardUrlInput = formAddCard.elements.link;
-const buttonFormAddCard = formAddCard.querySelector(".popup__button");
-
+//Функция добавления карточки
 function handleFormSubmitCard(evt) {
   evt.preventDefault();
 
@@ -139,19 +130,6 @@ function handleFormSubmitCard(evt) {
 
 formAddCard.addEventListener("submit", handleFormSubmitCard);
 
-//Функция редактирования аватара
-const popupAvatar = document.querySelector(".popup_type_avatar");
-const profileImageAvatar = document.querySelector(".profile__image");
-// слушатель на редактирования аватара
-profileImageAvatar.addEventListener("click", function () {
-  openPopup(popupAvatar);
-  clearValidation(formAvatarProfile, validationSettings);
-});
-
-const formAvatarProfile = popupAvatar.querySelector(".popup__form");
-const avatarInput = formAvatarProfile.querySelector(".popup__input_type_url");
-const buttonSaveAvatar = formAvatarProfile.querySelector(".popup__button");
-
 function editProfileAvatar(evt) {
   evt.preventDefault();
   let avatar = avatarInput.value;
@@ -172,9 +150,6 @@ function editProfileAvatar(evt) {
 
 formAvatarProfile.addEventListener("submit", editProfileAvatar);
 
-// Включаем валидацию
-enableValidation(validationSettings);
-
 function saveButton(loader, button) {
   if (loader) {
     button.textContent = "Сохранение.....";
@@ -182,6 +157,8 @@ function saveButton(loader, button) {
     button.textContent = "Сохранить";
   }
 }
+// Включаем валидацию
+enableValidation(validationSettings);
 
 //API
 let userId = "";
@@ -210,3 +187,23 @@ Promise.all([getUserData(), getInitialCards()])
   .catch((err) => {
     console.log("Ошибка при получении данных пользователя и карт:", err);
   });
+
+// слушатель на редактирования профиля
+popupEditButton.addEventListener("click", function () {
+  openPopup(popupEdit);
+  clearValidation(formElementEdit, validationSettings);
+  nameInputEdit.value = profileTitle.textContent;
+  jobInputEdit.value = profileDescription.textContent;
+});
+
+//слушатель на добавления карты
+popupCardButton.addEventListener("click", function () {
+  openPopup(popupCard);
+  clearValidation(formAddCard, validationSettings);
+});
+
+// слушатель на редактирования аватара
+profileImageAvatar.addEventListener("click", function () {
+  openPopup(popupAvatar);
+  clearValidation(formAvatarProfile, validationSettings);
+});
